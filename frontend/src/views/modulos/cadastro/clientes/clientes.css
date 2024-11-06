@@ -1,0 +1,99 @@
+/* .menu-3-dots-icon {
+background-image: url("../../../../../assets/icons/menu.svg");
+background-position: center;
+background-size: contain;
+width: 18px;
+height: 18px;
+  } */
+
+  .row {
+    margin: 0px !important;
+  }
+  
+  div .btn-md {
+    margin: 1px !important;
+    padding: 1px !important;
+  }
+  
+  
+  .card-label {
+    font-size: 8px;
+    line-height: 8px;
+    padding: 0px;
+  }
+  
+  .card-valor {
+    font-size: 16px;
+    line-height: 18px;
+    padding: 2px;
+  }
+  
+  .card-valor-total {
+    font-size: 20px;
+    line-height: 22px;
+    padding: 2px;
+  }
+  .table {
+    color: #3a3a3a;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #dee2e6;
+    text-transform: uppercase;
+}
+
+.table td,
+.table th {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f3f3;
+    text-align: justify;
+    vertical-align: middle;
+}
+
+.table-bordered {
+    border: none;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: 1px solid #dee2e6;
+    text-align: inherit;
+}
+
+.table td {
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.table td:hover {
+    background-color: #f1f3f5;
+}
+
+.table th {
+    background-color: #343a40;
+    color: #ffffff;
+    border-top: none;
+}
+
+.table tr:nth-child(even) td {
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}

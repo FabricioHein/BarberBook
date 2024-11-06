@@ -1,0 +1,25 @@
+<div id="bot" class="container">
+  <div>
+    <div class="bot bot-container">
+      <div class="bot-messages-container">
+        <div class="bot-message" v-for="m in messages">
+          <div>
+            <div class="bot-message-content text"><span>{{m.text}}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bot-actions-container">
+        <div>
+          <form class="bot-actions-text">
+
+            <input type="text" v-model="userMessage" placeholder="Seu nome e sobrenome" size="30" required="required"
+              class="bot-actions-text-input">
+
+            <button type="submit" @click="sendMessage()" class="bot-actions-buttons-button">
+              <span>Enviar</span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-the-mask@0.11.1/dist/vue-the-mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap');
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', sans-serif;
+      overflow: hidden;
+      /* Evita rolagem no body */
+    }
+
+    #app {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background: #1d1d1d;
+    }
+
+    .chat-wrapper {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 10%;
+      flex-grow: 1;
+      width: 100%;
+      background-color: #1d1d1d;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .bot-messages-container {
+      flex-grow: 1;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      max-height: 50%;
+    }
+
+    .bot-message {
+      background-color: #007bff;
+      color: white;
+      padding: 5px 10px;
+      /* Ajustado para dar mais espaço ao redor do texto */
+      border-radius: 10px;
+      /* Mantido para arredondar os cantos */
+      margin-bottom: 10px;
+      max-width: max-content;
+      /* Ajuste o valor para limitar a largura do balão */
+      word-wrap: break-word;
+      align-self: flex-end;
+      text-align: right;
+
+    }
+
+    .user-message {
+      background-color: #eaeaea;
+      color: #333;
+      padding: 5px 10px;
+      /* Ajustado para dar mais espaço ao redor do texto */
+      border-radius: 10px;
+      /* Mantido para arredondar os cantos */
+      margin-bottom: 10px;
+      max-width: max-content;
+      /* Ajuste o valor para limitar a largura do balão */
+      word-wrap: break-word;
+      align-self: flex-end;
+      text-align: left;
+
+    }
+
+    p {
+      color: #fff;
+    }
+
+    .text-center {
+      color: #ffff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .carousel {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .carousel-inner {
+      border-radius: 10px;
+    }
+
+    .carousel-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 16rem;
+      border: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 0 10px;
+      /* Adiciona espaçamento entre os produtos */
+    }
+
+    .card-img-top {
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .card-text {
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: #007bff;
+      border-radius: 50%;
+    }
+
+    .carousel-indicators [data-bs-target] {
+      background-color: #007bff;
+    }
+
+    .bot-actions-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bot-actions-text-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bot-actions-buttons-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .bot-actions-buttons-button:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-next {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+
+    .btn-next:hover {
+      background-color: #0056b3;
+    }
+
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .products-carousel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      width: 100%;
+    }
+
+    .products-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px;
+      gap: 20px;
+      /* Espaço entre os cards */
+      width: 100%;
+      cursor: grab;
+      /* Mãozinha ao passar o mouse */
+    }
+
+    .products-container:active {
+      cursor: grabbing;
+      /* Mão fechada enquanto arrasta */
+    }
+
+    .product-card {
+      flex: 0 0 auto;
+      /* Faz com que cada card seja flexível, mas não encolha nem cresça */
+      width: 250px;
+      /* Define a largura de cada card */
+    }
+
+    .card-img-top {
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .btn-next {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+
+    .btn-next:hover {
+      background-color: #0056b3;
+    }
+
+    /* Esconde a barra de rolagem, mas ainda permite rolar */
+    .products-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .products-container {
+      -ms-overflow-style: none;
+      /* IE e Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-if="id && empresa">
+
+    <!-- Exibe os dois botões juntos, se houver agendamentos -->
+    <div class="d-flex justify-content-center my-3">
+      <button type="button" class="btn btn-primary mx-2" @click="openModal" v-if="agendamentos.length > 0">Meus
+        Agendamentos</button>
+      <button type="button" class="btn btn-success mx-2" v-if="step > 2" @click="novoAgendamento">Novo
+        Agendamento</button>
+    </div>
+
+    <h1 class="text-center">Barbearia {{empresa}} {{step}} {{showCarousel}}</h1>
+
+    <!-- Modal para exibir agendamentos -->
+    <div class="modal fade" id="agendamentosModal" tabindex="-1" aria-labelledby="agendamentosModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="agendamentosModalLabel">Meus Agendamentos</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div v-if="agendamentos.length > 0">
+              <ul class="list-group">
+                <li v-for="(a, index) in agendamentos" :key="index" class="list-group-item">
+                  {{formatarDataHora(a)}}
+                </li>
+              </ul>
+            </div>
+            <div v-else>
+              <p>Você ainda não tem agendamentos.</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-wrapper">
+      <!-- Chat messages -->
+      <div class="bot-messages-container">
+
+        <!-- Mensagens -->
+        <div>
+
+          <div v-for="m in messages" :key="m.text" :class="m.sender == 'bot' ? 'bot-message' : 'user-message'">
+            {{ m.text }}
+          </div>
+        </div>
+        <div class="products-carousel" v-if="step == 2">
+          <div class="products-container" ref="productsContainer" @mousedown="startDragging" @mousemove="onDragging"
+            @mouseup="stopDragging" @mouseleave="stopDragging">
+            <div class="product-card" v-for="(barbeiro, index) in barbeiros" :key="index">
+
+              <div class="card h-100">
+                <div class="d-flex flex-wrap justify-content-center">
+                  <label class="p-2">Selecionar</label>
+                  <input type="checkbox" v-model="selectedBarbeiros" :value="barbeiro.id">
+                </div>
+                <img :src="barbeiro.linkFoto" v-if="barbeiro.linkFoto !=''" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ barbeiro.nome }}</h5>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botão "Continuar" -->
+          <div class="d-flex flex-wrap justify-content-center">
+            <button v-if="selectedBarbeiros !=''" class="btn-next" @click="selecioneServicos()">
+              Continuar Agendamento
+            </button>
+          </div>
+
+        </div>
+        <div class="products-carousel" v-if="showCarousel && step == 3">
+          <div class="products-container" ref="productsContainer" @mousedown="startDragging" @mousemove="onDragging"
+            @mouseup="stopDragging" @mouseleave="stopDragging">
+            <div class="product-card" v-for="(produto, index) in produtos" :key="index">
+
+              <div class="card h-100">
+                <div class="d-flex flex-wrap justify-content-center">
+                  <label class="p-2">Selecionar</label>
+                  <input type="checkbox" v-model="selectedProdutos" :value="produto.nome">
+                </div>
+
+                <img :src="produto.link_img" v-if="produto.link_img !=''" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ produto.nome }}</h5>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+        <!-- Etapa 4: Pega o Telefone -->
+        <div v-if="step == 4 ">
+          <form class="bot-actions-container">
+            <input type="text" v-model="telefone" v-mask="'(##) #####-####'" placeholder="Digite o seu Telefone"
+              required="required" class="bot-actions-text-input" @keyup.enter="sendTelefone">
+            <button @click.prevent="sendTelefone" class="bot-actions-buttons-button">
+              Enviar
+            </button>
+          </form>
+        </div>
+
+
+        <!-- Etapa 4: Escolhe Dia e Hora -->
+        <div v-if="step == 5">
+          <h6 class="text-center">Escolha um dia e horário:</h6>
+
+          <!-- Campo de Seleção de Data -->
+          <div class="d-flex justify-content-center mb-3">
+            <input :min="minDate" type="date" v-model="selectedDate" class="form-control w-50"
+              @change="setDay(selectedDate)">
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-center" v-if="selectedDate != '' && selectedDate ">
+            <div v-for="horario in horarios" :key="horario" class="p-2">
+              <button class="btn btn-outline-primary" @click="setHorario(horario)">
+                {{ horario }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- Botão "Continuar" -->
+        <div class="d-flex flex-wrap justify-content-center">
+          <button v-if="selectedProdutos !='' && step == 3" class="btn-next" @click="getTelefone()">
+            Continuar Agendamento
+          </button>
+        </div>
+
+        <!-- Etapa 1: Captura do Nome  -->
+        <div v-if="step == 1 ">
+          <form class="bot-actions-container" @submit.prevent="sendMessage">
+            <input type="text" v-model="userName" placeholder="Seu nome e sobrenome" required="required"
+              class="bot-actions-text-input" />
+            <button type="submit" class="bot-actions-buttons-button">
+              Enviar
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <script>
+        new Vue({
+          el: '#app',
+          data: {
+            id: null,
+            minDate: '',
+            empresa: '',
+            empresaId: null,
+            loadPage: null,
+            step: 1,
+            userName: '',
+            selectedBarbeiros: [],
+            telefone: '',
+            selectedDate: '',
+            // Lista de dias bloqueados (datas desativadas)
+            diasBloqueados: [
+              '2024-11-10',
+              '2024-10-20',
+              '2024-11-01'
+            ],
+            selectedProdutos: [],
+            selectedHorario: '',
+            agendamentos: [],
+            barbeiros: [],
+            produtos: [
+              {
+                nome: 'Corte de Cabelo',
+                link_img: './corte.png',
+                descricao: 'Corte clássico ou moderno, conforme sua preferência.'
+              },
+              {
+                nome: 'Barba',
+                link_img: './barba.png',
+                descricao: 'Aparar, alinhar ou desenhar a barba com acabamento profissional.'
+              },
+              {
+                nome: 'Corte de Cabelo + Barba',
+                link_img: './corte-barba.png',
+                descricao: 'Pacote completo para cabelo e barba, com produtos premium.'
+              },
+              {
+                nome: 'Sobrancelha',
+                link_img: './sombrancelha.png',
+                descricao: 'Design de sobrancelha para um visual impecável.'
+              },
+              {
+                nome: 'Hidratação Capilar',
+                link_img: './hidratacao.png',
+                descricao: 'Tratamento de hidratação profunda para cabelo.'
+              },
+              {
+                nome: 'Corte Infantil',
+                link_img: './infantil.png',
+                descricao: 'Corte de cabelo especial para crianças.'
+              }
+            ],
+            horarios: [],
+            messages: [],
+            showCarousel: false,
+            baseURL: 'http://localhost:3000'
+          },
+          mounted() {
+            this.step = 1;
+            this.loadPage = new Date();
+            const urlParams = new URLSearchParams(window.location.search);
+            const chatId = urlParams.get('id');
+
+            this.id = chatId;
+            this.getData(this.id);
+            this.minDate = this.getTodayDate();
+
+          },
+          methods: {
+            isDisabledDate(date) {
+              if (!date) return false; // Se a data não foi selecionada, não desativar
+              const formattedDate = new Date(date).toISOString().split('T')[0]; // Formata a data no formato YYYY-MM-DD
+              return this.diasBloqueados.includes(formattedDate); // Verifica se a data está na lista de bloqueados
+            },
+            getTodayDate() {
+              const today = new Date();
+              const year = today.getFullYear();
+              const month = String(today.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se necessário
+              const day = String(today.getDate()).padStart(2, '0'); // Adiciona zero à esquerda se necessário
+              return `${year}-${month}-${day}`; // Formato YYYY-MM-DD
+            },
+            getData(id) {
+              const api = axios.create({
+                baseURL: this.baseURL,
+                timeout: 5000,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Cache-Control': 'no-cache',  // Evita o uso de cache
+                  'Pragma': 'no-cache',         // Para compatibilidade com navegadores mais antigos
+                  'Expires': '0',               // Imediatamente expirado
+                },
+              });
+
+              api.get(`/api/agenda/agendamento/${id}`, {
+                params: {
+                  _t: Date.now()  // Adiciona um timestamp para evitar cache na URL
+                }
+              })
+                .then((response) => {  // Função arrow, preserva o `this` do escopo externo
+                  var data = response.data;
+
+                  this.empresaId = data.id;
+                  if (data.nome_empresa) {
+                    this.empresa = data.nome_empresa;
+                  };
+
+                  if (data.produto.length > 0) {
+                    this.produtos = data.produto;
+                  };
+
+                  if (data.Users.length > 0) {
+                    this.barbeiros = data.Users;
+                  }
+
+                  this.loadUserData();
+
+
+                  console.log(response.data);
+                })
+                .catch((error) => {
+                  console.error('Erro ao pegar os dados:', error);
+                });
+            },
+            postDay(payload) {
+
+              payload['_t'] = Date.now();
+
+              const api = axios.create({
+                baseURL: this.baseURL,
+                timeout: 5000,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Cache-Control': 'no-cache',  // Evita o uso de cache
+                  'Pragma': 'no-cache',         // Para compatibilidade com navegadores mais antigos
+                  'Expires': '0',               // Imediatamente expirado
+                },
+              });
+
+              api.post('/api/agenda/horarios-disponiveis', payload,)
+                .then(response => {
+                  console.log(response.data)
+                  if (this.horarios) {
+                    this.horarios = response.data;
+                  };
+
+                })
+                .catch(error => {
+                  console.error('Erro ao postar os dados:', error);
+                });
+            },
+
+            postData(payload) {
+
+              const api = axios.create({
+                baseURL: this.baseURL,
+                timeout: 5000,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Cache-Control': 'no-cache',  // Evita o uso de cache
+                  'Pragma': 'no-cache',         // Para compatibilidade com navegadores mais antigos
+                  'Expires': '0',               // Imediatamente expirado
+                },
+              });
+
+
+              api.post('/api/agenda/agendamento/criarAgendamento', payload)
+                .then(response => {
+                  console.log(response.data)
+                })
+                .catch(error => {
+                  console.error('Erro ao postar os dados:', error);
+                });
+            },
+            novoAgendamento() {
+              this.messages = [];
+              this.loadUserData();
+
+            },
+            formatarDataHora(a) {
+              const data = new Date(a.data);
+              const dia = data.getDate();
+              const mes = data.toLocaleString('pt-BR', { month: 'long' });
+              const ano = data.getFullYear();
+              const hora = a.hora;
+
+              return `${dia} de ${mes} de ${ano} às ${hora}`;
+            },
+            getTelefone() {
+
+              setTimeout(() => {
+                this.messages.push({ text: `Serviços selecionados: ${this.selectedProdutos.join(', ')}`, sender: 'bot' });
+
+                this.messages.push({ text: `Confirme o seu telefone`, sender: 'bot' });
+                this.nextStep(4);
+              }, 1000);
+
+
+            },
+            loadUserData() {
+              const savedName = localStorage.getItem('userName') ? localStorage.getItem('userName') : '';
+              const telefone = localStorage.getItem('telefone') ? localStorage.getItem('telefone') : '';
+              const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) ? JSON.parse(localStorage.getItem('agendamentos')) : [];
+
+              if (savedName) {
+                this.userName = savedName;
+                this.telefone = telefone;
+                this.agendamentos = agendamentos;
+
+                this.nextStep(2);
+              }
+
+              if (savedName) {
+
+                this.messages.push({ text: `Que bom te ver de novo, ${this.userName}!`, sender: 'bot' });
+
+                this.messages.push({
+                  sender: 'bot',
+                  text: `Selecione o profissional que deseja agendar.`
+                });
+                this.showCarousel = true;
+
+                this.nextStep(2);
+
+              } else {
+                console.log(this.empresa)
+                this.messages.push({ text: `Olá, tudo bem? Sou a assistente virtual da Barberaria ${this.empresa} e cuido do agendamento dos serviços dos profissionais dele(a).`, sender: 'bot' },
+                  { text: 'Qual o seu nome? Escreva seu nome e sobrenome.', sender: 'bot' })
+              }
+            },
+            saveUserData() {
+              localStorage.setItem('userName', this.userName);
+
+            },
+            saveUserDataTelefone() {
+              localStorage.setItem('telefone', this.telefone);
+
+
+            },
+            setDay(selectedDate) {
+
+              const dia = new Date(`${this.selectedDate}T00:00`);
+
+              const payload = {
+                dia: dia,
+                uuid: this.id,
+                barbeiroId: Number(this.selectedBarbeiros.join(', '))
+              };
+
+              this.postDay(payload);
+
+
+            },
+            setHorario(horario) {
+              this.selectedHorario = horario;
+              let dataHora = `${this.selectedDate}T${this.selectedHorario}:00`;
+              let date_start = new Date(dataHora);
+              let date_end = new Date(dataHora);
+              date_end.setMinutes(date_end.getMinutes() + 30);
+
+          
+
+              // Cria os parâmetros básicos da agenda
+              let params = {
+                title: this.userName,
+                description: this.selectedProdutos.join(', '),
+                className: 'danger',
+                status: 'agendado',
+                date_start: date_start,
+                date_end: date_end,
+                nome: this.userName,
+                telefone: this.telefone,
+                userIds: [Number(this.selectedBarbeiros.join(', '))],
+                uuid: this.id
+
+              };
+
+              this.postData(params);
+
+              const payload = {
+                data: this.selectedDate,
+                hora: this.selectedHorario       
+                            
+              };
+
+              var agendamentoHorario = this.formatarDataHora(payload);
+
+              setTimeout(() => {
+                this.messages.push({
+                  sender: 'bot',
+                  text: `Seu agendamento para o dia ${agendamentoHorario} está confirmado, com os seguintes serviços: ${this.selectedProdutos.join(', ')}`
+                });
+
+                this.messages.push({
+                  sender: 'bot',
+                  text: `Agradecemos pela sua preferência! Caso precise alterar ou cancelar o agendamento, estamos à disposição. Até breve!`
+                });
+                this.nextStep(6);
+
+              }, 1000);
+
+
+              this.agendamentos.push({
+                data: this.selectedDate,
+                hora: this.selectedHorario
+              });
+
+              localStorage.setItem('agendamentos', JSON.stringify(this.agendamentos))
+            },
+            startDragging(event) {
+              this.isDragging = true;
+              this.startX = event.clientX;
+              this.scrollLeft = this.$refs.productsContainer.scrollLeft;
+            },
+            onDragging(event) {
+              if (!this.isDragging) return;
+              const x = event.clientX;
+              const walk = (x - this.startX) * 3;
+              this.$refs.productsContainer.scrollLeft = this.scrollLeft - walk;
+            },
+            stopDragging() {
+              this.isDragging = false;
+            },
+            nextStep(step) {
+              this.step = step;
+            },
+            selecioneServicos() {
+
+              setTimeout(() => {
+
+                this.messages.push({
+                  sender: 'bot',
+                  text: `Agora selecione um ou mais serviços que deseja agendar.`
+                });
+
+                this.nextStep(3);
+              }, 1000);
+
+
+            },
+            sendTelefone() {
+              if (this.step == 4 && this.telefone) {
+                this.messages.push({
+                  sender: 'user',
+                  text: `Meu Telefone é ${this.telefone}.`
+                });
+
+                this.saveUserDataTelefone();
+                this.nextStep(5);
+              }
+            },
+            sendMessage() {
+              if (this.step === 1 && this.userName) {
+                this.messages.push({
+                  sender: 'user',
+                  text: `Meu nome é ${this.userName}.`
+                });
+
+                setTimeout(() => {
+                  this.messages.push({
+                    sender: 'bot',
+                    text: `Olá ${this.userName}.`
+                  });
+                  this.messages.push({
+                    sender: 'bot',
+                    text: `Selecione os serviços que deseja agendar.`
+                  });
+
+                  this.showCarousel = true;
+                  this.saveUserData();
+                  this.nextStep(2);
+                }, 1000);
+
+
+              }
+            },
+            openModal() {
+
+              const modal = new bootstrap.Modal(document.getElementById('agendamentosModal'));
+              modal.show();
+            },
+            confirmarAgendamento() {
+              this.messages.push({
+                sender: 'bot',
+                text: `Seu agendamento para o dia ${this.selectedDate}, às ${this.selectedHorario} está confirmado, com os seguintes serviços: ${this.selectedProdutos.join(', ')}`
+              });
+            }
+          }
+        });
+      </script>
+</body>
+
+</html>

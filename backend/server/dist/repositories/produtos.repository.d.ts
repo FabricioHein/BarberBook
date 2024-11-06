@@ -1,0 +1,85 @@
+import { PrismaService } from 'src/base/relacional/PrismaService';
+export declare class ProdutoRepository {
+    private prisma;
+    constructor(prisma: PrismaService);
+    getProdutoAll(empresa_configId: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }[]>;
+    getByIdProduto(id: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+    createProduto(data: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+    updateProduto(id: any, data: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+    deleteProduto(id: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+}

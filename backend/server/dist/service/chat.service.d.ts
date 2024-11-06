@@ -1,0 +1,186 @@
+import { ChatRepository } from 'src/repositories/chat.repository';
+import { ChatInfoRepository } from 'src/repositories/chat-info.repository';
+import { MessagesRepository } from 'src/repositories/messagen.repository';
+import { WhatsappService } from './whatsapp.service';
+export declare class ChatService {
+    private messagesRepository;
+    private chatRepository;
+    private chatInfoRepository;
+    private whatsappService;
+    constructor(messagesRepository: MessagesRepository, chatRepository: ChatRepository, chatInfoRepository: ChatInfoRepository, whatsappService: WhatsappService);
+    getChatInfoByUuid(uuid: any): Promise<any>;
+    updatechatInfo(data: any): Promise<any>;
+    getAllChatInfo(clienteId: any): Promise<any>;
+    getByIdchatInfo(clienteId: any): Promise<any>;
+    createchatInfo(data: any): Promise<any>;
+    deletechatInfo(data: any): Promise<any>;
+    getChatInfoByUuidCliente(uuid: any): Promise<any>;
+    getAllChatMsgm(chatId: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        type: string;
+        chat_id: number;
+        message_id: number;
+        username: string;
+        text: string;
+        whatsapp_id: string;
+        atendimento: boolean;
+    }[]>;
+    getByChatUuidMessages(uuid: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        type: string;
+        chat_id: number;
+        message_id: number;
+        username: string;
+        text: string;
+        whatsapp_id: string;
+        atendimento: boolean;
+    }[]>;
+    getByChatUuidMessagesLast(uuid: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        type: string;
+        chat_id: number;
+        message_id: number;
+        username: string;
+        text: string;
+        whatsapp_id: string;
+        atendimento: boolean;
+    }[]>;
+    createMessages(msg: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        type: string;
+        chat_id: number;
+        message_id: number;
+        username: string;
+        text: string;
+        whatsapp_id: string;
+        atendimento: boolean;
+    }>;
+    getChaByUuid(uuid: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    }>;
+    atualizarChat(data: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    }>;
+    getAllChatOpen(clienteId: any): Promise<({
+        chat_info: {
+            uuid: string;
+            type: string;
+        };
+    } & {
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    })[]>;
+    getAllChatClose(clienteId: any): Promise<({
+        chat_info: {
+            uuid: string;
+            type: string;
+        };
+    } & {
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    })[]>;
+    createChat(data: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    }>;
+    getMessages(data: any): Promise<void>;
+    novoChat(data: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    }>;
+    deleteChat(data: any): Promise<{
+        created_at: Date;
+        updated_at: Date;
+        taskId: string;
+        nome: string;
+        telefone: string;
+        email: string;
+        empresa_configId: number;
+        uuid: string;
+        data_close: Date;
+        chat_id: number;
+        chat_info_id: number;
+        chat_open: boolean;
+        nome_usuario_close: string;
+        chat_app: string;
+    }>;
+    deleteToken(data: any): Promise<any>;
+}

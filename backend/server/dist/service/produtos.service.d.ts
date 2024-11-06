@@ -1,0 +1,72 @@
+import { ProdutoRepository } from 'src/repositories/produtos.repository';
+import { FileHelper } from 'src/helper/file.helper';
+export declare class ProdutoService {
+    private produtoRepositorio;
+    private fileHelper;
+    constructor(produtoRepositorio: ProdutoRepository, fileHelper: FileHelper);
+    imageProduto(data: any): Promise<string>;
+    atualizarProduto(data: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+    getAllProduto(empresa_configId: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }[]>;
+    createProduto(data: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+    deleteProduto(data: any): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        nome: string;
+        operador: string;
+        empresa_configId: number;
+        descricao: string;
+        codigo: string;
+        detalhamento: string;
+        link_img: string;
+        qtd_estoque: import("@prisma/client/runtime/library").Decimal;
+        preco_venda: import("@prisma/client/runtime/library").Decimal;
+        ativo: boolean;
+        categoria_produtoId: number;
+    }>;
+}
